@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
+import { auth } from "./lib/auth";
+import { headers } from "next/headers";
 
-export function proxy(request) {
-    console.log("message from proxyx")
-  return NextResponse.redirect(new URL("/home", request.url));
+export async function proxy(request) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if(!session){
+    return NextResponse.redirect(new URL('/signin', request.url))
+  }
+
+  //   return NextResponse.redirect(new URL("/home", request.url));
 }
 export const config = {
-  matcher: ['/profile'],
+  matcher: ["/profile", "/all-photos/:path"],
 };
