@@ -1,0 +1,26 @@
+"use client";
+import { UpdateUserModal } from "@/components/UpdateUserModal";
+import { authClient } from "@/lib/auth-client";
+import { Avatar, AvatarFallback, AvatarImage, Button, Card } from "@heroui/react";
+
+const ProfilePage = () => {
+  const userData = authClient.useSession();
+  const user = userData.data?.user;
+  console.log(user);
+  return (
+    <div>
+      <Card className="max-w-96 mx-auto flex flex-col items-center border mt-5">
+        <Avatar className="h-20 w-20" size="sm">
+            <AvatarImage alt="" src= {user?.image} referrerPolicy="no-referrer">
+            </AvatarImage>
+            <AvatarFallback> {user?.name.charAt(0)} </AvatarFallback>
+        </Avatar>
+        <h2 className="text-xl font-bold"> {user?.name} </h2>
+        <p className="text-muted"> {user?.email}  </p>
+        <UpdateUserModal></UpdateUserModal>
+      </Card>
+    </div>
+  );
+};
+
+export default ProfilePage;
